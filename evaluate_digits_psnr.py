@@ -11,7 +11,6 @@ import os
 
 os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
 
-# ---------- Optical Utilities ----------
 def random_phase_mask(shape):
     phase = 2 * np.pi * np.random.rand(*shape)
     return np.exp(1j * phase)
@@ -28,7 +27,6 @@ def angular_spectrum_propagation(u0, distance, wavelength, dx):
     u1 = np.fft.ifft2(U1)
     return u1
 
-# ---------- UNet ----------
 class UNet(nn.Module):
     def __init__(self, in_channels=1, out_channels=1, base_channels=64):
         super(UNet, self).__init__()
@@ -63,7 +61,6 @@ class UNet(nn.Module):
         x4 = self.dec2(x4)
         return self.out_conv(x4)
 
-# ---------- Evaluation ----------
 def evaluate_digits(model, device, distances, args):
     dataset = datasets.MNIST(root='./data', train=False, download=True, transform=transforms.ToTensor())
     images = dataset.data.numpy().astype(np.float32) / 255.0
@@ -111,7 +108,6 @@ def plot_results(psnr_results, distances):
     plt.savefig("psnr_vs_distance.png", dpi=600)
     plt.show()
 
-# ---------- Main ----------
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('--model_path', type=str, required=True, help="Path to trained .pth model")

@@ -79,7 +79,6 @@ def train(args):
     dataset = datasets.MNIST(root='./data', train=True, download=True, transform=transforms.ToTensor())
     images = dataset.data[:args.samples].numpy().astype(np.float32) / 255.0
 
-    # 升頻到 224x224
     upsampled_images = []
     for img in images:
         img = torch.tensor(img).unsqueeze(0).unsqueeze(0)  # [1,1,28,28]
@@ -182,13 +181,11 @@ def visualize_restoration(model, device, args, distances, wavelength, dx):
     fig = plt.figure(figsize=(20, 4), constrained_layout=True)
     gs = gridspec.GridSpec(1, 6, figure=fig)
 
-    # Original Image
     ax = plt.subplot(gs[0, 0])
     ax.imshow(test_img_up, cmap='gray')
     ax.set_title("Original", fontsize=14)
     ax.axis('off')
 
-    # Select and display 5 representative steps
     for i, idx in enumerate(indices):
         ax = plt.subplot(gs[0, i + 1])
         ax.imshow(restored_steps[idx], cmap='gray')
